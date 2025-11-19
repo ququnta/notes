@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'header';
-  src: url(./fsb.otf);
+  src: url(./lemon.ttf);
 }
 @font-face {
   font-family: 'text';
-  src: url(./hr.ttf);
+  src: url(./escal.ttf);
 }
 
 ::selection{
@@ -21,9 +21,7 @@
 
 * {
 	outline: 0 none;
-
-	
-	}
+}
 	
 	
 html {
@@ -147,7 +145,8 @@ p{
 	color:#88a6ba;
 }
 
-.add {
+.button {
+	text-align: center;
 	display:block;
 	width:85px;
 	height:30px;
@@ -165,7 +164,7 @@ p{
 	
 }
 
-.add a{
+.button a{
 	display:block;
 	line-height:28px;
 	background:#e6eaed;
@@ -183,12 +182,12 @@ p{
 	box-shadow: inset 0  1px 0 #fff;
 }
 
-.add a:hover {
+.button a:hover {
 	background: -webkit-gradient(linear, 0 bottom, 0 top, from(#eff7fc ), to(#f5fafd));
 	background: -moz-linear-gradient(-90deg, #f5fafd, #eff7fc ) ;
 }
 
-.add a:active {
+.button a:active {
 	color:#fff;
 	text-shadow:0 1px 1px #343c41;
 	border:none;
@@ -216,7 +215,6 @@ a {
 	color: #af0303
 }
 
-
 .lang-switch {
 	margin-bottom: 20px;
 	font-size: 14px;
@@ -227,4 +225,18 @@ a {
 }
 .lang-switch a:hover {
 	color: #88a6ba;
+}
+
+.delete {
+	display:none;
+	position: relative;
+	margin-right: 4;
+	top: -4px;
+}
+
+.note:hover > .delete {
+	display: block;
+}
+.note > .text > textarea:focus, .note > .text > textarea:active ~ .note > .delete {
+	display: block;
 }

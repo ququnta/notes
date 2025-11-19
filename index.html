@@ -1,8 +1,9 @@
-<html xmlns="http://www.w3.org/1999/xhtml">	
+<html lang="ru">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Мои заметки</title>
 		<link href="global.css" rel="stylesheet" type="text/css" media="screen">
+		<meta name="viewport" content="width=device-width">
 		<script type="text/javascript">
 			let translations = {};
 			let notecnt = 0;
@@ -90,7 +91,7 @@
 					let notes = event.target.result;
 					notes.forEach(function(noteData) {
 						notecnt = notecnt + 1;
-						let to_add = `<div class="note" id="`+noteData.id+`"><div class="tape"></div><div class="text"><textarea oninput="auto_grow(this); saveNotes();">`+noteData.text+`</textarea><p align="right"><a class="deleter" onclick="delnote('`+noteData.id+`')">`+translations.deleteBtn+`</a></p></div><div class="line"></div><div class="bg"></div> </div>`;
+						let to_add = `<div class="note" id="`+noteData.id+`"><div class="tape"></div><div class="text"><textarea oninput="auto_grow(this); saveNotes();">`+noteData.text+`</textarea></div><div class="line"></div><div class="bg"></div> <span class="button delete"><a class="deleter" onclick="delnote('`+noteData.id+`')">`+translations.deleteBtn+`</a></span></div>`;
 						let notesgb = document.getElementById('notes');
 						notesgb.insertAdjacentHTML('beforeend', to_add);
 
@@ -109,7 +110,7 @@
 
 				notecnt = notecnt + 1;
 				let noteid = 'note'+notecnt;
-				let to_add = `<div class="note" id="`+noteid+`"><div class="tape"></div><div class="text"><textarea oninput="auto_grow(this); saveNotes();">`+translations.defaultText+`</textarea><p align="right"><a class="deleter" onclick="delnote('`+noteid+`')">`+translations.deleteBtn+`</a></p></div><div class="line"></div><div class="bg"></div> </div>`;
+				let to_add = `<div class="note" id="`+noteid+`"><div class="tape"></div><div class="text"><textarea oninput="auto_grow(this); saveNotes();">`+translations.defaultText+`</textarea></div><div class="line"></div><div class="bg"></div> <span class="button delete"><a class="deleter" onclick="delnote('`+noteid+`')">`+translations.deleteBtn+`</a></span></div>`;
 				console.log('Added note #note' + notecnt);
 				let notesgb = document.getElementById('notes');
 				notesgb.insertAdjacentHTML('beforeend', to_add);
@@ -144,7 +145,7 @@
 				<h1>Мои заметки</h1>
 				<div id="notes">
 				</div>
-				<span class="add" onclick="newnote()"><a href="#">+</a></span>
+				<span class="button add" onclick="newnote()"><a href="#">+</a></span>
 			</div>
 			<div class="lang-switch">
 				<a href="#" onclick="loadLanguage('ru'); return false;">RU</a> |
