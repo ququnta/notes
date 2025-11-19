@@ -126,12 +126,15 @@
 			window.onload = function() {
 				let script = document.createElement('script');
 				script.src = 'lang-' + (localStorage.getItem('lang') || 'ru') + '.js';
+				document.head.appendChild(script);
 				script.onload = function() {
 					translations = window.LANG_DATA;
 					delete window.LANG_DATA;
 					initDB();
+					applyTranslations()
 				};
-				document.head.appendChild(script);
+
+
  			};
 		</script>
 	</head>
