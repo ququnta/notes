@@ -1,0 +1,151 @@
+<html xmlns="http://www.w3.org/1999/xhtml">	
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Заметочки</title>
+		<link href="global.css" rel="stylesheet" type="text/css" media="screen">
+		<script type="text/javascript">
+			let translations = {};
+			let notecnt = 0;
+			let db;
+			// load lng
+			function loadLanguage(lang) {
+				let script = document.createElement('script');
+				script.src = 'lang-' + lang + '.js';
+				script.onload = function() {
+					if (window.LANG_DATA) {
+						translations = window.LANG_DATA;
+						applyTranslations();
+						localStorage.setItem('lang', lang);
+						delete window.LANG_DATA;
+					}
+				};
+				script.onerror = function() {
+					console.error('error: ' + lang);
+				};
+				// remove old script
+				let oldScript = document.querySelector('script[data-lang]');
+				if (oldScript) oldScript.remove();
+				script.setAttribute('data-lang', lang);
+				document.head.appendChild(script);
+			}
+
+			// apply lang
+			function applyTranslations() {
+				document.querySelector('h1').textContent = translations.title;
+				document.querySelectorAll('.deleter').forEach(el => el.textContent = translations.deleteBtn);
+			}
+			// IndexedDB init
+			function initDB() {
+				let request = indexedDB.open('NotesDB', 1);
+
+				request.onerror = function() {
+					console.error('oops, db error');
+				};
+
+				request.onsuccess = function(event) {
+					db = event.target.result;
+					loadNotes();
+				};
+
+				request.onupgradeneeded = function(event) {
+					db = event.target.result;
+					if (!db.objectStoreNames.contains('notes')) {
+						db.createObjectStore('notes', { keyPath: 'id' });
+					}
+				};
+			}
+
+			// save all notes
+			function saveNotes() {
+				if (!db) return;
+
+				let transaction = db.transaction(['notes'], 'readwrite');
+				let store = transaction.objectStore('notes');
+
+				// clear old notes
+				store.clear();
+
+				// save current notes
+				let notes = document.querySelectorAll('.note');
+				notes.forEach(function(note) {
+					let textarea = note.querySelector('textarea');
+					let data = {
+						id: note.id,
+						text: textarea.value
+					};
+					store.add(data);
+				});
+			}
+
+			// load notes
+			function loadNotes() {
+				if (!db) return;
+
+				let transaction = db.transaction(['notes'], 'readonly');
+				let store = transaction.objectStore('notes');
+				let request = store.getAll();
+
+				request.onsuccess = function(event) {
+					let notes = event.target.result;
+					notes.forEach(function(noteData) {
+						notecnt = notecnt + 1;
+						let to_add = `<div class="note" id="`+noteData.id+`"><div class="tape"></div><div class="text"><textarea oninput="auto_grow(this); saveNotes();">`+noteData.text+`</textarea><p align="right"><a class="deleter" onclick="delnote('`+noteData.id+`')">`+translations.deleteBtn+`</a></p></div><div class="line"></div><div class="bg"></div> </div>`;
+						let notesgb = document.getElementById('notes');
+						notesgb.insertAdjacentHTML('beforeend', to_add);
+
+						let textarea = document.querySelector('#' + noteData.id + ' textarea');
+						auto_grow(textarea);
+					});
+				};
+			}
+
+			function auto_grow(element) {
+				element.style.height = "5px";
+				element.style.height = (element.scrollHeight) + "px";
+			};
+
+			function newnote() {
+
+				notecnt = notecnt + 1;
+				let noteid = 'note'+notecnt;
+				let to_add = `<div class="note" id="`+noteid+`"><div class="tape"></div><div class="text"><textarea oninput="auto_grow(this); saveNotes();">`+translations.defaultText+`</textarea><p align="right"><a class="deleter" onclick="delnote('`+noteid+`')">`+translations.deleteBtn+`</a></p></div><div class="line"></div><div class="bg"></div> </div>`;
+				console.log('Added note #note' + notecnt);
+				let notesgb = document.getElementById('notes');
+				notesgb.insertAdjacentHTML('beforeend', to_add);
+				saveNotes();
+			};
+
+			function delnote(noteidentifier) {
+				document.getElementById(noteidentifier).remove();
+				console.log('Deleted note #' + noteidentifier);
+				saveNotes();
+			};
+
+			// start
+			window.onload = function() {
+				let script = document.createElement('script');
+				script.src = 'lang-' + (localStorage.getItem('lang') || 'ru') + '.js';
+				script.onload = function() {
+					translations = window.LANG_DATA;
+					delete window.LANG_DATA;
+					initDB();
+				};
+				document.head.appendChild(script);
+ 			};
+		</script>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="my-notes">
+				<h1>Мои заметки</h1>
+				<div id="notes">
+				</div>
+				<span class="add" onclick="newnote()"><a href="#">+</a></span>
+			</div>
+			<div class="lang-switch">
+				<a href="#" onclick="loadLanguage('ru'); return false;">RU</a> |
+				<a href="#" onclick="loadLanguage('en'); return false;">EN</a>
+			</div>
+		</div>
+	</body>
+</html>
