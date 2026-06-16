@@ -164,37 +164,35 @@ p{
 	
 }
 
-.button a{
+.button button {
 	display:block;
+	width:100%;
 	line-height:28px;
 	background:#e6eaed;
 	border:1px solid #babfc2;
 	text-decoration:none;
 	color:#646668;
 	text-shadow:0 1px 0 #fff;
-	-webkit-border-radius: 20px;
-	-moz-border-radius:  20px;
 	border-radius: 20px;
 	background: -webkit-gradient(linear, 0 bottom, 0 top, from(#e0e6ea ), to(#eceff2));
 	background: -moz-linear-gradient(-90deg, #eceff2, #e0e6ea ) ;
-	-webkit-box-shadow:  inset 0  1px 0 #fff; 
-	-moz-box-shadow:  inset 0  1px 0 #fff;
 	box-shadow: inset 0  1px 0 #fff;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: inherit;
 }
 
-.button a:hover {
+.button button:hover {
 	background: -webkit-gradient(linear, 0 bottom, 0 top, from(#eff7fc ), to(#f5fafd));
 	background: -moz-linear-gradient(-90deg, #f5fafd, #eff7fc ) ;
 }
 
-.button a:active {
+.button button:active {
 	color:#fff;
 	text-shadow:0 1px 1px #343c41;
 	border:none;
 	background: -webkit-gradient(linear, 0 bottom, 0 top, from(#dadedf ), to(#c7cdcf));
 	background: -moz-linear-gradient(-90deg, #c7cdcf, #dadedf ) ;
-	-webkit-box-shadow:  inset 0  1px 1px #868a8c; 
-	-moz-box-shadow:  inset 0  1px 1px #868a8c;
 	box-shadow: inset 0  1px 1px #868a8c;
 }
 
